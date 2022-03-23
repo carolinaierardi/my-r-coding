@@ -1,0 +1,59 @@
+#Script Name: sample question
+#Author: CMI
+#Date: 6/12/2021
+#version: 1.0
+#notes: using mixed ANOVAs 
+#purpose: write a complete results section for report
+
+#getting the data 
+getwd()
+data = read.csv("RM3_Week9_SampleExamDataset_CokeEnergy.csv")
+View(data)
+
+data$MEP = as.numeric(data$MEP)
+data$Drink = as.factor(data$Drink)
+data$Site = as.factor(data$Site)
+
+#plotting the data
+library(ggplot2)
+
+ggplot(aes(x = Drink, y = MEP, fill = Site), data = data) + geom_boxplot() +
+ggtitle(label = "Neuroexcitability for different drinks") + labs(x = "Drinks", y = "MEP (mV)")
+
+#calculating descriptive statistics 
+
+    #grand mean
+grand.mean = mean(data$MEP)
+
+    #means for each group
+mean.site = tapply(data$MEP, data$Site, mean)
+mean.groups = tapply(data$MEP, data$Drink, mean)
+
+    #mean across each group
+means.across = aggregate(MEP ~ Site + Drink, data = data, mean)
+
+
+cat("Reporting the descriptive statistics")
+
+#calculating inferential statistics
+cat("We will run an independent measures 2x3 mixed ANOVA. Our site will be our witihn-subjects IV and the Drink will be the between- subjects IV. 
+    Our aim is to compare neuroexcitability against Coke energy, Coke classic and water. Our hypothesis is that neuroexcitability will be significantly lower in Coke energy than in Coke classic and these two will have lower excitability than water. Additionally, excitability in the M1 will be lower than in the vertex.")
+
+    #running the ANOVA
+install.packages("afex")
+library(afex)
+my.anova = aov_ez(id = "ParticipantID", dv = "MEP", data = data, between = "Drink", within = "Site", return_aov = TRUE, detailed = TRUE)
+summary(my.anova)
+
+    #testing the assumptions
+qqnorm(y = my.anova$residuals)
+
+shapiro.test(my.anova$residuals)
+cat("Found the assumptions was violated in the data. Shapiro-Wilks test came out significant, W = 0.9701, p = 0.009")
+
+#homogeneity of variance
+library(car)
+leveneTest(data$MEP, data$Drink)
+cat("Found the homogeneity of variance assumption is not violated, F(2, 117) = 0.9679, p = 0.3829")
+
+cat("No need to test for schericity because there are only two levels in the within subjects factor")
