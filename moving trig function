@@ -1,0 +1,31 @@
+#Script Name: Group H5G Coding Challenge Week 1
+#Date: 21/01/2021
+#Version:2.0
+#Authors: Carolina M.
+#Purpose: create moving trigonometric functions in opposite directions
+
+#Naming function coefficients
+x = seq(-12,12,0.2) #plot limits
+
+#y1
+
+k1 = 2
+a1 = 0.5
+p1 = pi/2
+
+#y2
+
+k2 = 0.75
+a2 = 1.5
+p2 = pi/4
+
+#for loop
+p = seq(0, 2*pi, 2*pi/50) #by doing this, we get to 50 iterations
+for (i in p) {
+  y1 = a1 * sin(k1*x + i)
+  y2= a2 * sin(k2*x - i) #the negative value makes the functions move in opposite directions
+  Sys.sleep(0.5) #by changing this value, the functions can move slower or faster
+  plot(x, y1, 'l', main = "Moving Trig Functions", col = 'orange')
+  lines(x, y2, col = "purple")
+}
+
