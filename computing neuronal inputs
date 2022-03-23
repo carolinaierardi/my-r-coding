@@ -1,0 +1,83 @@
+%Script Name: computing_summative_q2.m
+%Date: 19/02/2022
+%Authors: 
+    %Carolina Moretti Ierardi - K19064197; 
+    %Alaleh Tadayon - K20032410; 
+    %Audrey Chin - K20053949
+%Version: 1.0
+%Purpose: plot the signal output D, given the inputs of A, B and C
+
+%Starting the session -clears the command window, workspace & closes figures  
+close all;
+clear all;
+clc;
+
+%Question 2: plot the response in region D
+
+%% Signal A: producing and plotting signal
+
+t = 1:60; %to plot for time
+
+%creating the sub-steps for signal A
+A_ss(1:10) = [1:1:10]; %starts at value 1 at time 1 and increases 
+%by 1 until time 10...
+A_ss(11) = 10; %...remains at 10 for time 11...
+A_ss(11:20) = [10:-1:1]; %...in steps of -1 to 1 at 20.
+
+%full signal A should repeat the sub-steps 3x 
+A = repmat(A_ss, 3);
+
+%plotting a figure for signal A
+figure
+plot(t, A, 'm', LineWidth = 3); 
+xlabel("Time"); %X axis label
+ylabel("Value of Signal A"); %Y axis label
+title("Signal A"); %gives title to figure
+
+%% Signal B: producing and plotting signal
+
+%creating the sub-steps for signal B     
+B_ss(1:10) = 2; %starts at value 2 at time 1 and remains at 2 until time 10...
+B_ss(11:20) = 0;%...then jumps to a value of 0 from time 11 to 20.
+
+%full signal B should repeat the sub-steps 3x 
+B = repmat(B_ss, 3);
+
+%plotting a figure for signal B
+figure
+plot(t, B, 'g', LineWidth = 3);
+xlabel("Time"); % x axis label
+ylabel("Value of Signal B"); %Y axis label
+title("Signal B"); %gives title to the figure
+
+%% Signal C: producing and plotting the signal
+
+  % Region C then performs a sin operation on the sum of these inputs.
+
+%full signal of C
+C = sin(A + B);
+
+%plotting a figure for signal C
+figure
+plot(t, C, 'b', LineWidth = 3);
+xlabel("Time"); %X axis label
+ylabel("Value of Signal C"); %Y axis label
+title("Signal C"); %gives title  to the figure
+
+%% Signal D: producing and plotting the signal
+
+  % If Region C then sends its signal to Region D, with multiplicative
+  % weight of 0.5, plot the response in region D.
+
+%full signal of D
+D = 0.5*C;
+
+%plotting a figure for signal D
+figure
+plot(t, D, 'c', LineWidth = 3);
+xlabel("Time"); %X axis label
+ylabel("Value of Signal D"); %Y axis label
+title("Signal D"); % gives title to figure
+
+
+                         %%%END OF CODE%%%
