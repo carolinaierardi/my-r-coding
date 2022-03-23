@@ -1,0 +1,22 @@
+#4) students performance in a dataframe
+
+  #i: combine all scores into a dataframe
+performance = tibble(Age = c(12, 12, 13, 14, 14, 14, 15, 15, 15, 15, 15, 16, 16, 17),
+                     Football = c(3, 5, 3, 7, 8, 4, 4, 3, 7, 8, 3, 4, 2, 6),
+                     Reading = c(43, 47, 33, 89, 72, 28, 47, 36, 58, 71, 44, 47, 32, 68),
+                     Numeracy = c(29, 48, 23, 58, 69, 33, 41, 32, 56, 73, 26, 43, 38, 44))
+
+  #ii: are football ratings predicted by literacy and numeracy scores?
+    #run a multiple linear regression
+prediction = lm(Football ~ Age + Numeracy + Reading, data = performance)
+sum.prediction = summary(prediction) #to report findings easily
+
+#reporting of the results
+cat("There is only a significant relationship between Football ability and Numeracy levels, p =",sum.prediction$coefficients[3,4], "However, overall the combined Age, Numeracy levels and Reading levels do predict Football ability significantly, p = 3.045e-05")
+
+  #plot scatter plots
+library(ggplot2)
+ggplot(performance, aes(Football, Reading)) + geom_point(color = "black") #Football and reading
+ggplot(performance, aes(Football, Numeracy)) + geom_point(color = "red") #football and numeracy
+
+#5: t-tests and samples from dataframe
