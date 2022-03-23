@@ -1,2 +1,2 @@
 # my-r-coding
-Coding in R during course
+Coding in R and MATLAB during course
