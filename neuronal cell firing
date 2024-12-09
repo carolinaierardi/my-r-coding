@@ -1,0 +1,80 @@
+%Script Name: Week 7 worksheet.m
+%Author: CMI
+%Date: 07/03/2022
+%Version: 1.0
+%Notes: week 7 - intro to ML
+%Purpose: Plotting action potentials
+
+%Question 2: OFF cell light pattern
+
+close all 
+clear all
+
+%define the properties
+% we have 6 trials in the experiment. 
+%in the first 3 trials, the light is shone at the centre (there will be no
+%firing then
+%in the last 3 trial, the light is shone in the surround (there will be
+%firing)
+%in each trial, the light comes on at 0.5s until 1s
+
+%the question asks us to plot all trials using imagesc()
+
+
+
+%For trials 1-3, the background firing state is 10% and whene the light is
+%on the firing rate will be 0%. When the light is turned off, the light is
+%turned off, there will be an 80% of firing
+
+%For trials 4-6, the background firing rate is 10%, when the light is on
+%the firing rate is 60% and when it is turned off, there is a 10% chance of firing
+
+            %1. Defining time properties
+max_time = 1.5;
+time_interval = 0.01;
+all_bins = [0:time_interval:max_time]; %vector that goes in steps of 0.01s until 1.5s
+light_on = 0.5; %time in s that light came on
+light_off = 1; %time in s that light came off
+
+
+
+            %Define the firing probablity for each trial in each section
+trial_prob_first_one = [10 0 80];
+trial_prob_first_three = repmat(trial_prob_first_one, 3, 1);
+trial_prob_last_one = [10 60 10];
+trial_prob_last_three = repmat(trial_prob_last_one, 3, 1);
+
+%now we create a matrix 6x3, where each row is a trial and each column is
+%the section of light or no light
+trials_prob = vertcat(trial_prob_first_three, trial_prob_last_three);
+[i, j] = size(trials_prob)
+cell_firing_trials = zeros(6, 3,50);
+
+
+for k = 1:i; %run through the rows trials
+    for f = 1:j; %run through the columns different periods in the trial
+        cell_firing_trials(k, f, :) = zeros(50,1); %I have 50 time bins and I need to 
+        %code them in here
+        for zz = 1:50 % for each time bin within the period
+            x = randi(100)
+            if x <= trials_prob(k, f)
+                cell_firing = 1
+            else %if light is showing in surround
+                cell_firing = 0; %cell should fire
+            end
+            cell_firing_trials(k, f, zz) = cell_firing;
+        end
+    end
+   
+end
+
+for t=1:6
+trials_all_epochs(t,:) = [squeeze(cell_firing_trials(t,1,:)); ...
+    squeeze(cell_firing_trials(t,2,:)) ;...
+    squeeze(cell_firing_trials(t,3,:))]
+end
+figure
+imagesc(trials_all_epochs)
+xlabel('Time (secs)')
+ylabel('Trials')
+title('Firing Rates OFF cells')
